@@ -1,0 +1,17 @@
+tqdm
+pytest
+torch=2.5.1
+mace_torch==0.3.12
+ase
+MDAnalysis
+fire
+jupyterlab
+click
+numpy
+dscribe
+pylab
+pymatgen
+yaml
+sklearn
+networkx
+scipy
