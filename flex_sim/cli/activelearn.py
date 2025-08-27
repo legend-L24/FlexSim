@@ -1,5 +1,5 @@
-from u_md import simpleMD, GeometryOptimization, run_md_npt
-from u_selector import selector, selector_tail
+from flex_sim.u_md import simpleMD, GeometryOptimization, run_md_npt
+from flex_sim.u_selector import selector, selector_tail
 from ase.io import read, write
 import random
 from collections import Counter

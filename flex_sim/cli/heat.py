@@ -1,5 +1,5 @@
-from u_md import simpleMD, GeometryOptimization, MD
-from u_selector import selector
+from flex_sim.u_md import simpleMD, GeometryOptimization, MD
+from flex_sim.u_selector import selector
 from ase.io import read, write
 import random
 from collections import Counter

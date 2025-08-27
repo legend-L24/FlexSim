@@ -15,7 +15,6 @@ import torch
 from grid import get_accessible_positions
 from molecule import add_molecule
 from optimize import optimize_atoms
-from dac_sim import DEFAULT_MODEL_PATH
 
 
 class WidomInsertion(Dynamics):

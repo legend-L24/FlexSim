@@ -1,0 +1,54 @@
+#!/bin/bash -l
+
+#SBATCH --job-name=cp2k-job
+#SBATCH --partition=normal
+#SBATCH --time=08:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-core=1
+#SBATCH --ntasks-per-node=16
+#SBATCH --cpus-per-task=16
+#SBATCH --account=lp35
+#SBATCH --hint=nomultithread
+#SBATCH --hint=exclusive
+#SBATCH --no-requeue
+#SBATCH --uenv=cp2k/2024.3:v2
+#SBATCH --view=cp2k
+
+export CUDA_CACHE_PATH="/dev/shm/$USER/cuda_cache"
+export MPICH_GPU_SUPPORT_ENABLED=1
+export MPICH_MALLOC_FALLBACK=1
+export OMP_NUM_THREADS=$((SLURM_CPUS_PER_TASK - 1))
+
+ulimit -s unlimited
+#charge_f='MOF-1.mulliken'
+prev_dir=""
+mapfile -t list < <(awk -F',' '{print $1}' order.csv)
+for filename in "${list[@]}"; do
+  target_dir="${filename%.*}"
+
+  echo "$target_dir"
+  echo start_time: `date`
+
+  if [[ ! -d "$target_dir" ]]; then
+     mkdir -p "$target_dir"
+     cp "../confs/$target_dir"".cif" "./$target_dir/initial.cif"
+     cp input.inp process.py "./$target_dir"
+
+     if [[ -n "$prev_dir" && -d "$prev_dir" ]]; then
+        prev_file='MOF-RESTART.wfn'
+        if [[ -f "$prev_dir/$prev_file" ]]; then
+           cp "./$prev_dir/$prev_file" "./$target_dir"
+        fi
+     fi
+
+     cd "$target_dir" || exit 1
+     /users/lyutao/miniforge3/bin/python process.py
+     srun --cpu-bind=socket bash ../mps-wrapper.sh cp2k.psmp -i input.inp -o output
+     rm initial.cif
+     cd ../ || exit 1
+  fi
+
+  prev_dir="$target_dir"
+  echo end_time: `date`
+
+done
