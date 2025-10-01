@@ -89,14 +89,7 @@ python -u heat.py \
 #### Example to run single H2O at 300 Kelvin in order to calculate ensemble average energy, which can be found in example folder. You need to add a "MACE.model" file into this folder.
 
 ```bash
-python -u run_mc.py \
-        --cif="$cif_file" \
-        --run_md \
-        --md_steps=1000000 \
-        --modelpath="MACE_run-5555.model" \
-        --suffix='0508' \
-        --cueq \
-        --temperature_list="[300]" \
+python -u run_mc.py 
 ```
 
 
