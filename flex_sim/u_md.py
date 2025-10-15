@@ -11,6 +11,7 @@ from ase.io import read, write
 from ase.md import MDLogger
 from ase.md.npt import NPT
 from ase.md.nptberendsen import NPTBerendsen
+from ase.constraints import FixAtoms
 
 def simpleMD(init_conf, temp, calc, fname, s, T):
     """
@@ -184,7 +185,7 @@ class XYZTrajectoryWriter:
         if self.counter % self.interval == 0:
             write(self.filename, self.atoms, append=True)
             
-def GeometryOptimization(atoms, outfile, logfile, interval=5, Fmax=0.01, stepMax=200, calc=None):
+def GeometryOptimization(atoms, outfile=None, logfile=None, interval=5, Fmax=0.01, stepMax=200, calc=None, save_traj=True, outputatoms=False, fix_indices=None):
     """Run geometry optimization using XTB calculator.
 
     Args:
@@ -196,11 +197,20 @@ def GeometryOptimization(atoms, outfile, logfile, interval=5, Fmax=0.01, stepMax
     """
     if not calc:
         calc = XTB(method = 'GFN1-xTB')
-    atoms.set_calculator(calc)
+    atoms.calc = calc
     opt = LBFGS(atoms, logfile=logfile)
-    opt.attach(XYZTrajectoryWriter(atoms, filename=outfile, interval=interval))
     
-    return opt.run(fmax=Fmax, steps=stepMax)
+    if fix_indices is not None:
+        constraint = FixAtoms(indices=fix_indices)
+        atoms.set_constraint(constraint)
+    
+    if save_traj:
+        opt.attach(XYZTrajectoryWriter(atoms, filename=outfile, interval=interval))
+    flag = opt.run(fmax=Fmax, steps=stepMax)
+    if outputatoms:
+        return atoms.copy(), flag
+    else:
+        return flag
 
 
     

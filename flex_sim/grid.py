@@ -5,7 +5,7 @@ import numpy as np
 
 import MDAnalysis as mda
 
-from molecule import add_molecule
+from .molecule import add_molecule
 
 
 def get_accessible_positions(
@@ -88,7 +88,7 @@ def add_gas_in_accessible_positions(
     grid_spacing: float = 0.1,
     cutoff_distance: float = 1.3,
     min_interplanar_distance: float = 6.0,
-) -> np.ndarray:
+) -> Atoms:
     """Add gas molecules in the accessible positions
 
     Parameters

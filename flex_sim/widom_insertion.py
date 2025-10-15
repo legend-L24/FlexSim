@@ -12,9 +12,9 @@ from ase.io.trajectory import Trajectory
 from mace.calculators import MACECalculator
 
 import torch
-from grid import get_accessible_positions
-from molecule import add_molecule
-from optimize import optimize_atoms
+from .grid import get_accessible_positions
+from .molecule import add_molecule
+from .optimize import optimize_atoms
 
 
 class WidomInsertion(Dynamics):
