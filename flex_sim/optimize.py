@@ -10,7 +10,6 @@ from ase.filters import FrechetCellFilter
 from mace.calculators import mace_mp
 
 import torch
-from dac_sim import DEFAULT_MODEL_PATH
 
 
 class GeometryOptimization:
@@ -82,7 +81,7 @@ class GeometryOptimization:
         default_dtype: Literal["float32", "float64"],
         dispersion: bool,
     ):
-        model_path = Path(model_path) if model_path else Path(DEFAULT_MODEL_PATH)
+        model_path = Path(model_path) #if model_path else Path(DEFAULT_MODEL_PATH)
         if not model_path.exists():
             raise FileNotFoundError(f"Model file not found: {model_path}")
         print(f"Using model at: {model_path}")

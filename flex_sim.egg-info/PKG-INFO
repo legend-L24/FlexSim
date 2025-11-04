@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: flex_sim
+Version: 1.0.0
+Summary: FlexSim: A Python Package for simulations of water adsorption within MOFs considering the framework flexibility
+Author: Yutao Li
+Author-email: llgend09@gmail.com
+Dynamic: author
+Dynamic: author-email
+Dynamic: summary
