@@ -33,7 +33,7 @@ def add_molecule(gas: Atoms, rotate: bool = True, translate: tuple = None) -> At
     gas = gas.copy()
     if rotate:
         angle = np.random.rand() * 360
-        axis = np.random.rand(3)
+        axis = np.random.rand(3)#np.random.rand(3)
         gas.rotate(v=axis, a=angle)
     if translate is not None:
         if len(translate) != 3:
